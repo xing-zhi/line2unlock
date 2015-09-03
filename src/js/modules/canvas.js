@@ -32,9 +32,21 @@ function drawLine(ctx, item1, item2) {
   ctx.stroke();
 }
 
+function getCanvasData(ctx) {
+  const canvasEl = ctx.canvas;
+
+  return ctx.getImageData(0, 0, canvasEl.width, canvasEl.height);
+}
+
+function restoreCanvas(ctx, canvasData) {
+  ctx.putImageData(canvasData, 0, 0);
+}
+
 export default {
   drawCircle,
   drawText,
   drawLine,
-  windowToCanvas
+  windowToCanvas,
+  getCanvasData,
+  restoreCanvas
 };

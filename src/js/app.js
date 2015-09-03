@@ -10,7 +10,9 @@ const drawTextAndCircle = draw.drawTextAndCircle,
       lightUp = draw.lightUp,
       whichItem = helper.whichItem,
       lightOff = draw.lightOff,
-      drawLine = canvas.drawLine;
+      drawLine = canvas.drawLine,
+      getCanvasData = canvas.getCanvasData,
+      restoreCanvas = canvas.restoreCanvas;
 
 const canvasEl = document.querySelector('canvas'),
       ctx = canvasEl.getContext('2d'),
@@ -33,14 +35,6 @@ function init() {
   }
 }
 
-function saveCanvas() {
-  canvasSavedData = ctx.getImageData(0, 0, canvasEl.width, canvasEl.height);
-}
-
-function restoreCanvas() {
-  ctx.putImageData(canvasSavedData, 0, 0);
-}
-
 function startDrag(e) {
   e.preventDefault();
 
@@ -49,7 +43,7 @@ function startDrag(e) {
 
   if ( itemIndex !== -1 ) {
     dragging = true;
-    saveCanvas();
+    canvasSavedData = getCanvasData(ctx);
     itemsDragged.push(itemIndex);
     lightUp(ctx, circles.get(itemIndex));
   } else {
@@ -60,7 +54,7 @@ function startDrag(e) {
 function drawRubberLine(loc) {
   const lightUpedItem = circles.get(itemsDragged[itemsDragged.length - 1]);
 
-  restoreCanvas();
+  restoreCanvas(ctx, canvasSavedData);
   drawLine(ctx, lightUpedItem, loc);
 }
 
@@ -70,12 +64,12 @@ function drawLastLine() {
         item1 = circles.get(startItemIndex),
         item2 = circles.get(endItemIndex);
 
-  restoreCanvas();
+  restoreCanvas(ctx, canvasSavedData);
 
   drawLine(ctx, item1, item2);
   lightOff(ctx, item1);
 
-  saveCanvas();
+  canvasSavedData = getCanvasData(ctx);
 }
 function isDrag(e) {
   e.preventDefault();
@@ -92,7 +86,7 @@ function isDrag(e) {
 
     drawLastLine(loc);
     lightUp(ctx, circles.get(itemIndex));
-    saveCanvas();
+    canvasSavedData = getCanvasData(ctx);
   } else {
     drawRubberLine(loc);
   }
@@ -100,7 +94,7 @@ function isDrag(e) {
 
 function finishDrag() {
   dragging = false;
-  restoreCanvas();
+  restoreCanvas(ctx, canvasSavedData);
   lightOff(ctx, circles.get(itemsDragged[itemsDragged.length - 1]));
 }
 
