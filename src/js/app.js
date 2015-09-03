@@ -12,7 +12,8 @@ const drawTextAndCircle = draw.drawTextAndCircle,
       lightOff = draw.lightOff,
       drawLine = canvas.drawLine,
       getCanvasData = canvas.getCanvasData,
-      restoreCanvas = canvas.restoreCanvas;
+      restoreCanvas = canvas.restoreCanvas,
+      getLastItemOfArr = helper.getLastItemOfArr;
 
 const canvasEl = document.querySelector('canvas'),
       ctx = canvasEl.getContext('2d'),
@@ -53,7 +54,7 @@ function startDrag(e) {
 }
 
 function drawRubberLine(loc) {
-  const lightUpedItem = circles.get(itemsDragged[itemsDragged.length - 1]);
+  const lightUpedItem = circles.get(getLastItemOfArr(itemsDragged));
 
   restoreCanvas(ctx, canvasSavedData);
   drawLine(ctx, lightUpedItem, loc);
@@ -61,7 +62,7 @@ function drawRubberLine(loc) {
 
 function drawLastLine() {
   const startItemIndex = itemsDragged[itemsDragged.length - 2],
-        endItemIndex = itemsDragged[itemsDragged.length - 1],
+        endItemIndex = getLastItemOfArr(itemsDragged),
         item1 = circles.get(startItemIndex),
         item2 = circles.get(endItemIndex);
 
@@ -73,6 +74,7 @@ function drawLastLine() {
 
   canvasSavedData = getCanvasData(ctx);
 }
+
 function isDrag(e) {
   e.preventDefault();
 
@@ -83,7 +85,7 @@ function isDrag(e) {
   const loc = windowToCanvas(ctx.canvas, e.clientX, e.clientY),
         itemIndex = whichItem(circles, loc);
 
-  if ( itemIndex !== -1 && itemIndex !== itemsDragged[itemsDragged.length - 1] ) {
+  if ( itemIndex !== -1 && itemIndex !== getLastItemOfArr(itemsDragged) ) {
     itemsDragged.push(itemIndex);
 
     drawLastLine(loc);
@@ -97,7 +99,7 @@ function isDrag(e) {
 function finishDrag() {
   dragging = false;
   restoreCanvas(ctx, canvasSavedData);
-  lightOff(ctx, circles.get(itemsDragged[itemsDragged.length - 1]));
+  lightOff(ctx, circles.get(getLastItemOfArr(itemsDragged)));
 }
 
 init();

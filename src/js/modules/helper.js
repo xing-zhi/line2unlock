@@ -11,6 +11,11 @@ function whichItem(items, loc) {
   return -1;
 }
 
+function getLastItemOfArr(arr) {
+  return arr[arr.length - 1];
+}
+
 export default {
-  whichItem
+  whichItem,
+  getLastItemOfArr
 };
