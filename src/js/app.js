@@ -69,6 +69,7 @@ function drawLastLine() {
 
   drawLine(ctx, item1, item2);
   lightOff(ctx, item1);
+  lightUp(ctx, item2);
 
   canvasSavedData = getCanvasData(ctx);
 }
@@ -86,7 +87,7 @@ function isDrag(e) {
     itemsDragged.push(itemIndex);
 
     drawLastLine(loc);
-    lightUp(ctx, circles.get(itemIndex));
+
     canvasSavedData = getCanvasData(ctx);
   } else {
     drawRubberLine(loc);
