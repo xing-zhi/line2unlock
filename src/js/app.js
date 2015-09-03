@@ -43,10 +43,10 @@ function startDrag(e) {
 
   if ( itemIndex !== -1 ) {
     itemsDragged.push(itemIndex);
-
     dragging = true;
-    canvasSavedData = getCanvasData(ctx);
+
     lightUp(ctx, circles.get(itemIndex));
+    canvasSavedData = getCanvasData(ctx);
   } else {
     dragging = false;
   }
