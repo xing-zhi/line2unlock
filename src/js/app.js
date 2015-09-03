@@ -42,9 +42,10 @@ function startDrag(e) {
         itemIndex = whichItem(circles, loc);
 
   if ( itemIndex !== -1 ) {
+    itemsDragged.push(itemIndex);
+
     dragging = true;
     canvasSavedData = getCanvasData(ctx);
-    itemsDragged.push(itemIndex);
     lightUp(ctx, circles.get(itemIndex));
   } else {
     dragging = false;
@@ -81,7 +82,7 @@ function isDrag(e) {
   const loc = windowToCanvas(ctx.canvas, e.clientX, e.clientY),
         itemIndex = whichItem(circles, loc);
 
-  if ( itemIndex !== -1 ) {
+  if ( itemIndex !== -1 && itemIndex !== itemsDragged[itemsDragged.length - 1] ) {
     itemsDragged.push(itemIndex);
 
     drawLastLine(loc);
